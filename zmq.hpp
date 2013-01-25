@@ -25,7 +25,7 @@
 #ifndef __ZMQ_HPP_INCLUDED__
 #define __ZMQ_HPP_INCLUDED__
 
-#include <zmq.h>
+#include "zmq.h"
 
 #include <algorithm>
 #include <cassert>
@@ -284,6 +284,13 @@ namespace zmq
         {
             ptr = zmq_socket (context_.ptr, type_);
             if (ptr == NULL)
+                throw error_t ();
+        }
+
+        inline socket_t(void* context_, int type_)
+        {
+            ptr = zmq_socket (context_, type_);
+            if (context_ == NULL)
                 throw error_t ();
         }
 
