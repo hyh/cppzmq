@@ -45,6 +45,8 @@
 
     #if __has_feature(cxx_deleted_functions)
         #define ZMQ_DELETED_FUNCTION = delete
+    #else
+        #define ZMQ_DELETED_FUNCTION
     #endif
 #elif defined(_MSC_VER) && (_MSC_VER >= 1600)
     #define ZMQ_HAS_RVALUE_REFS
@@ -94,6 +96,13 @@ namespace zmq
         if (rc < 0)
             throw error_t ();
         return rc;
+    }
+
+    inline void proxy (void *frontend, void *backend, void *capture)
+    {
+        int rc = zmq_proxy (frontend, backend, capture);
+        if (rc != 0)
+            throw error_t ();
     }
 
     inline void version (int *major_, int *minor_, int *patch_)
